@@ -1,0 +1,73 @@
+alias: Vesternet8Way
+description: Handle multiple button clicks
+triggers:
+  - topic: zigbee2mqtt/FriendlyNameOfSwitchInZ2M
+    trigger: mqtt
+actions:
+  - choose:
+      - conditions:
+          - condition: template
+            value_template: "{{ trigger.payload_json.action == 'button_1_click' }}"
+        sequence:
+          - target:
+              device_id: 7edf9e43fc5aafe8a6c09ba4140ebaad
+            action: light.toggle
+            data: {}
+      - conditions:
+          - condition: template
+            value_template: "{{ trigger.payload_json.action == 'button_2_click' }}"
+        sequence:
+          - target:
+              device_id: 50c8a86e6163a7bc21bc765c6e7acd3f
+            action: light.toggle
+            data: {}
+      - conditions:
+          - condition: template
+            value_template: "{{ trigger.payload_json.action == 'button_3_click' }}"
+        sequence:
+          - target:
+              device_id: 50c8a86e6163a7bc21bc765c6e7acd3f
+            action: light.toggle
+            data: {}
+      - conditions:
+          - condition: template
+            value_template: "{{ trigger.payload_json.action == 'button_4_click' }}"
+        sequence:
+          - target:
+              device_id: 50c8a86e6163a7bc21bc765c6e7acd3f
+            action: light.toggle
+            data: {}
+      - conditions:
+          - condition: template
+            value_template: "{{ trigger.payload_json.action == 'button_5_click' }}"
+        sequence:
+          - target:
+              device_id: 50c8a86e6163a7bc21bc765c6e7acd3f
+            action: light.toggle
+            data: {}
+      - conditions:
+          - condition: template
+            value_template: "{{ trigger.payload_json.action == 'button_6_click' }}"
+        sequence:
+          - action: light.toggle
+            data: {}
+            target:
+              device_id: c1d37193bc71520cee0c96c1dc40aad0
+      - conditions:
+          - condition: template
+            value_template: "{{ trigger.payload_json.action == 'button_7_click' }}"
+        sequence:
+          - target:
+              device_id: 50c8a86e6163a7bc21bc765c6e7acd3f
+            action: light.toggle
+            data: {}
+      - conditions:
+          - condition: template
+            value_template: "{{ trigger.payload_json.action == 'button_8_click' }}"
+        sequence:
+          - target:
+              device_id: 50c8a86e6163a7bc21bc765c6e7acd3f
+            action: light.toggle
+            data: {}
+
+mode: single
