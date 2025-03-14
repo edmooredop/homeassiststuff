@@ -1,73 +1,176 @@
-alias: Vesternet8Way
-description: Handle multiple button clicks
-triggers:
-  - topic: zigbee2mqtt/FriendlyNameOfSwitchInZ2M
-    trigger: mqtt
-actions:
-  - choose:
-      - conditions:
-          - condition: template
-            value_template: "{{ trigger.payload_json.action == 'button_1_click' }}"
-        sequence:
-          - target:
-              device_id: 7edf9e43fc5aafe8a6c09ba4140ebaad
-            action: light.toggle
-            data: {}
-      - conditions:
-          - condition: template
-            value_template: "{{ trigger.payload_json.action == 'button_2_click' }}"
-        sequence:
-          - target:
-              device_id: 50c8a86e6163a7bc21bc765c6e7acd3f
-            action: light.toggle
-            data: {}
-      - conditions:
-          - condition: template
-            value_template: "{{ trigger.payload_json.action == 'button_3_click' }}"
-        sequence:
-          - target:
-              device_id: 50c8a86e6163a7bc21bc765c6e7acd3f
-            action: light.toggle
-            data: {}
-      - conditions:
-          - condition: template
-            value_template: "{{ trigger.payload_json.action == 'button_4_click' }}"
-        sequence:
-          - target:
-              device_id: 50c8a86e6163a7bc21bc765c6e7acd3f
-            action: light.toggle
-            data: {}
-      - conditions:
-          - condition: template
-            value_template: "{{ trigger.payload_json.action == 'button_5_click' }}"
-        sequence:
-          - target:
-              device_id: 50c8a86e6163a7bc21bc765c6e7acd3f
-            action: light.toggle
-            data: {}
-      - conditions:
-          - condition: template
-            value_template: "{{ trigger.payload_json.action == 'button_6_click' }}"
-        sequence:
-          - action: light.toggle
-            data: {}
-            target:
-              device_id: c1d37193bc71520cee0c96c1dc40aad0
-      - conditions:
-          - condition: template
-            value_template: "{{ trigger.payload_json.action == 'button_7_click' }}"
-        sequence:
-          - target:
-              device_id: 50c8a86e6163a7bc21bc765c6e7acd3f
-            action: light.toggle
-            data: {}
-      - conditions:
-          - condition: template
-            value_template: "{{ trigger.payload_json.action == 'button_8_click' }}"
-        sequence:
-          - target:
-              device_id: 50c8a86e6163a7bc21bc765c6e7acd3f
-            action: light.toggle
-            data: {}
+blueprint:
+  name: Vesternet 8 Way Switch Blueprint
+  description: >
+    'This blueprint requires Z2M to be using the Vesternet external converters as per 
+    https://www.vesternet.com/pages/vesternet-zigbee-wall-controller-8-button-technical-support-home-assistant-zigbee2mqtt
+    Heavily based on https://github.com/FunkeyFlo/ha-blueprints/blob/main/automations/ROB_200-007-0.yaml 
 
+
+  domain: automation
+  input:
+    remote:
+      name: Remote
+      description: Vesternet Switch to use (select Action sensor)
+      selector:
+        entity:
+          integration: mqtt
+          domain: sensor
+          multiple: false
+    button_1_short:
+      name: Button 1 - short
+      default: []
+      selector:
+        action: {}
+    button_2_short:
+      name: Button 2 - short
+      default: []
+      selector:
+        action: {}
+    button_1_hold:
+      name: Button 1 - hold
+      default: []
+      selector:
+        action: {}
+    button_2_hold:
+      name: Button 2 - hold
+      default: []
+      selector:
+        action: {}
+    button_3_short:
+      name: Button 3 - short
+      default: []
+      selector:
+        action: {}
+    button_4_short:
+      name: Button 4 - short
+      default: []
+      selector:
+        action: {}
+    button_3_hold:
+      name: Button 3 - hold
+      default: []
+      selector:
+        action: {}
+    button_4_hold:
+      name: Button 4 - hold
+      default: []
+      selector:
+        action: {}
+
+    button_5_short:
+      name: Button 5 - short
+      default: []
+      selector:
+        action: {}
+    button_6_short:
+      name: Button 6 - short
+      default: []
+      selector:
+        action: {}
+    button_5_hold:
+      name: Button 5 - hold
+      default: []
+      selector:
+        action: {}
+    button_6_hold:
+      name: Button 6 - hold
+      default: []
+      selector:
+        action: {}
+    button_7_short:
+      name: Button 7 - short
+      default: []
+      selector:
+        action: {}
+    button_8_short:
+      name: Button 8 - short
+      default: []
+      selector:
+        action: {}
+    button_7_hold:
+      name: Button 7 - hold
+      default: []
+      selector:
+        action: {}
+    button_8_hold:
+      name: Button 8 - hold
+      default: []
+      selector:
+        action: {}
+
+
+  source_url: https://github.com/FunkeyFlo/ha-blueprints/blob/main/automations/ROB_200-007-0.yaml
 mode: single
+max_exceeded: silent
+trigger:
+- platform: state
+  entity_id: !input remote
+
+action:
+- variables:
+    command: '{{ trigger.to_state.state }}'
+- choose:
+
+  - conditions:
+    - '{{ command == ''button_1_click'' }}'
+    sequence: !input button_1_short
+
+  - conditions:
+    - '{{ command == ''button_2_click'' }}'
+    sequence: !input button_2_short
+
+  - conditions:
+    - '{{ command == ''button_3_click'' }}'
+    sequence: !input button_3_short
+
+  - conditions:
+    - '{{ command == ''button_4_click'' }}'
+    sequence: !input button_4_short
+
+  - conditions:
+    - '{{ command == ''button_5_click'' }}'
+    sequence: !input button_5_short
+
+  - conditions:
+    - '{{ command == ''button_6_click'' }}'
+    sequence: !input button_6_short
+
+  - conditions:
+    - '{{ command == ''button_7_click'' }}'
+    sequence: !input button_7_short
+    
+  - conditions:
+    - '{{ command == ''button_8_click'' }}'
+    sequence: !input button_8_short
+
+  - conditions:
+    - '{{ command == ''button_1_hold'' }}'
+    sequence: !input button_1_hold
+
+  - conditions:
+    - '{{ command == ''button_2_hold'' }}'
+    sequence: !input button_2_hold
+
+  - conditions:
+    - '{{ command == ''button_3_hold'' }}'
+    sequence: !input button_3_hold
+
+  - conditions:
+    - '{{ command == ''button_4_hold'' }}'
+    sequence: !input button_4_hold
+
+  - conditions:
+    - '{{ command == ''button_5_hold'' }}'
+    sequence: !input button_5_hold
+
+  - conditions:
+    - '{{ command == ''button_6_hold'' }}'
+    sequence: !input button_6_hold
+
+  - conditions:
+    - '{{ command == ''button_7_hold'' }}'
+    sequence: !input button_7_hold
+
+  - conditions:
+    - '{{ command == ''button_8_hold'' }}'
+    sequence: !input button_8_hold
